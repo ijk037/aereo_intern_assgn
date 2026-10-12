@@ -59,11 +59,3 @@ class StorageService:
             total_bytes,
         )
         return file_id, saved_path, total_bytes
-
-    @classmethod
-    def remove_file(cls, path: Path) -> None:
-        try:
-            if path.exists():
-                path.unlink(missing_ok=True)
-        except Exception as e:
-            logger.warning("Failed to remove file %s: %s", path, e)

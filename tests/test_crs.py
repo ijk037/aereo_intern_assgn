@@ -43,15 +43,3 @@ def test_geometry_reprojection():
     reprojected = CRSService.reproject_geometry(poly, "EPSG:4326", target_crs)
     # Area of 0.01 degree at equator is approx (1113 m * 1113 m) ≈ 1,230,000 m²
     assert 1_000_000 < reprojected.area < 1_500_000
-
-
-def test_geodesic_measurements():
-    poly = Polygon([(77.59, 12.97), (77.60, 12.97), (77.60, 12.98), (77.59, 12.98), (77.59, 12.97)])
-    area, length = CRSService.calculate_geodesic_measurements(poly)
-    assert area is not None and area > 0
-    assert length is None
-
-    line = LineString([(77.59, 12.97), (77.60, 12.98)])
-    area_l, length_l = CRSService.calculate_geodesic_measurements(line)
-    assert area_l is None
-    assert length_l is not None and length_l > 0

@@ -37,10 +37,7 @@ class FeatureRecord(Base):
     
     measurement_type = Column(String(50), nullable=False)  # area, length, none, unsupported
     area_sq_meters = Column(Float, nullable=True)
-    area_hectares = Column(Float, nullable=True)
-    area_sq_km = Column(Float, nullable=True)
     length_meters = Column(Float, nullable=True)
-    length_km = Column(Float, nullable=True)
     
     status = Column(String(50), nullable=False, default="SUCCESS")  # SUCCESS, SKIPPED, ERROR
     notes = Column(Text, nullable=True)

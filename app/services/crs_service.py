@@ -136,27 +136,3 @@ class CRSService:
             return np.column_stack([x, y])
 
         return shapely.transform(geometry, transform_coords)
-
-    @classmethod
-    def calculate_geodesic_measurements(
-        cls, geometry: BaseGeometry
-    ) -> Tuple[Optional[float], Optional[float]]:
-        """
-        Calculates ellipsoidal geodesic area and length using WGS84 ellipsoid via PyProj Geod
-        (Karney's algorithm). Used for verification and high-precision reference.
-        Returns: (area_sq_meters, length_meters)
-        """
-        geod = pyproj.Geod(ellps="WGS84")
-        g_type = geometry.geom_type
-
-        try:
-            if g_type in ("Polygon", "MultiPolygon"):
-                area, _ = geod.geometry_area_perimeter(geometry)
-                return abs(float(area)), None
-            elif g_type in ("LineString", "MultiLineString"):
-                length = geod.geometry_length(geometry)
-                return None, abs(float(length))
-        except Exception as e:
-            logger.debug("Geodesic calculation failed: %s", e)
-
-        return None, None

@@ -5,8 +5,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.api.deps import get_db_session
-from app.db.database import Base
+from app.db.database import Base, get_db
 from app.main import app
 
 # In-memory SQLite for fast, isolated tests
@@ -44,7 +43,7 @@ def client(db_session):
         finally:
             pass
 
-    app.dependency_overrides[get_db_session] = override_get_db
+    app.dependency_overrides[get_db] = override_get_db
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()

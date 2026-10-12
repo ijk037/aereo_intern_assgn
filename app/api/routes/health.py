@@ -3,14 +3,14 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 import pyogrio
 
-from app.api.deps import get_db_session
 from app.core.config import settings
+from app.db.database import get_db
 
 router = APIRouter(tags=["Health"])
 
 
 @router.get("/health", summary="Health Check")
-def health_check(db: Session = Depends(get_db_session)):
+def health_check(db: Session = Depends(get_db)):
     # Check database
     db_status = "healthy"
     try:

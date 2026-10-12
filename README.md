@@ -5,7 +5,7 @@ A production-grade backend service built with **FastAPI** that ingests geospatia
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests: Pytest](https://img.shields.io/badge/tests-25%20passed-brightgreen.svg)](https://docs.pytest.org/)
+[![Tests: Pytest](https://img.shields.io/badge/tests-24%20passed-brightgreen.svg)](https://docs.pytest.org/)
 
 ---
 
@@ -59,20 +59,18 @@ geospatial-measurement-api/
 ├── app/
 │   ├── main.py                     # FastAPI application entrypoint & middleware
 │   ├── api/
-│   │   ├── deps.py                 # Dependency injection (DB session)
 │   │   └── routes/
 │   │       ├── files.py            # /api/files endpoints
 │   │       └── health.py           # /health endpoint
 │   ├── core/
-│   │   ├── config.py               # Pydantic Settings & environment config
+│   │   ├── config.py               # Application config & environment settings
 │   │   └── exceptions.py           # Custom exception definitions & HTTP handlers
 │   ├── db/
-│   │   ├── database.py             # SQLAlchemy engine & session maker
+│   │   ├── database.py             # SQLAlchemy engine, session maker & get_db dependency
 │   │   └── models.py               # FileRecord & FeatureRecord ORM models
 │   ├── schemas/
 │   │   ├── file.py                 # File request/response schemas
-│   │   ├── measurement.py          # Measurement & summary schemas
-│   │   └── feature.py              # Feature & GeoJSON schemas
+│   │   └── measurement.py          # Measurement & summary schemas
 │   └── services/
 │       ├── crs_service.py          # CRS parsing, UTM selection, reprojection
 │       ├── measurement_service.py  # Area & length metric calculations
@@ -91,7 +89,7 @@ geospatial-measurement-api/
 │   └── test_edge_cases.py          # Edge case and corrupted file tests
 ├── Dockerfile                      # Production container image
 ├── docker-compose.yml              # Single-command container deployment
-├── requirements.txt                # Pinned dependencies
+├── requirements.txt                # Lean pinned dependencies
 ├── pyproject.toml                  # Project metadata and test settings
 └── README.md                       # Complete documentation
 ```
@@ -314,7 +312,6 @@ curl -X GET "http://localhost:8000/api/files/7303c19b88cf/measurements/"
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/api/files/` | Paginated list of all uploaded files (`skip`, `limit`) |
-| `GET` | `/api/files/{id}/features/` | GeoJSON FeatureCollection representation |
 | `DELETE` | `/api/files/{id}/` | Deletes file from disk and database |
 | `GET` | `/health` | Health check verifying database and GDAL/pyogrio drivers |
 
@@ -331,7 +328,7 @@ curl -X GET "http://localhost:8000/api/files/7303c19b88cf/measurements/"
 #### 1. Clone repository & enter directory
 ```bash
 git clone <YOUR_REPO_URL>
-cd "internship assgn"
+cd aereo_intern_assgn
 ```
 
 #### 2. Create and activate a virtual environment
@@ -352,8 +349,6 @@ pip install -r requirements.txt
 
 #### 4. Run the API server
 ```bash
-python run.py
-# Or directly via uvicorn:
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 

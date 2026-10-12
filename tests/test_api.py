@@ -71,13 +71,6 @@ def test_upload_and_measure_kml(client: TestClient, sample_kml_path: Path):
     assert point_item["area"] is None
     assert point_item["length"] is None
 
-    # Test GET /api/files/{id}/features/
-    feat_res = client.get(f"/api/files/{file_id}/features/")
-    assert feat_res.status_code == 200
-    feat_data = feat_res.json()
-    assert len(feat_data["features"]) == 3
-    assert feat_data["features"][0]["geometry"]["type"] in ("Polygon", "LineString", "Point")
-
 
 def test_upload_and_measure_shapefile_zip(client: TestClient, sample_shapefile_zip_path: Path):
     with open(sample_shapefile_zip_path, "rb") as f:
